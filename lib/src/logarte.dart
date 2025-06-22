@@ -205,11 +205,38 @@ class Logarte {
   }
 
   Future<void> openConsole(BuildContext context) async {
-    return Navigator.of(context).push<void>(
-      MaterialPageRoute(
-        builder: (_) => LogarteAuthScreen(this),
-        settings: const RouteSettings(name: '/logarte_auth'),
-      ),
+     await showGeneralDialog(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: true,
+      barrierLabel: "LogarteConsole", // just a label for semantics
+      barrierColor: Colors.black45, // dim background
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Directionality(textDirection: TextDirection.ltr, child: Center(
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height:   MediaQuery.of(context).size.height * 0.8,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: LogarteAuthScreen(this),
+            ),
+          ),
+        ));
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
     );
   }
+
+
 }

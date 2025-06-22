@@ -45,7 +45,7 @@ class _LogarteAuthScreenState extends State<LogarteAuthScreen> {
   Widget build(BuildContext context) {
     return LogarteThemeWrapper(
       child: WillPopScope(
-        onWillPop: () => Future.value(false),
+        onWillPop: () => Future.value(true),
         child: _isLoggedIn || _noPassword
             ? LogarteDashboardScreen(widget.instance)
             : Scaffold(
@@ -95,11 +95,10 @@ class _LogarteAuthScreenState extends State<LogarteAuthScreen> {
   }
 
   void _goToDashboard() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => LogarteDashboardScreen(widget.instance),
-        settings: const RouteSettings(name: '/logarte_dashboard'),
-      ),
-    );
+    setState(() {
+      // This triggers the UI to show the dashboard directly inside the dialog
+      _isLoggedIn = true;
+    });
   }
+
 }
