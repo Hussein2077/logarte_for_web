@@ -191,18 +191,13 @@ class _List<T extends LogarteEntry> extends StatelessWidget {
         ? instance.logs.value
         : instance.logs.value.whereType<T>().toList();
 
-    final filtered = logs.where((log) {
+    final filtered =logs.isEmpty?[]: logs.where((log) {
       return log.contents.any(
         (content) => content.toLowerCase().contains(search),
       );
     }).toList();
     //delay
-    Future.delayed(const Duration(milliseconds: 100)).then((value) {
 
-        filtered.clear();
-
-    });
- ;
 
     return Scrollbar(
       child: ListView.separated(
