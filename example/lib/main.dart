@@ -5,7 +5,7 @@ import 'package:share_plus/share_plus.dart';
 
 final Logarte logarte = Logarte(
   onShare: Share.share,
-  password: '1234',
+  ignorePassword:   true,
   customTab: const MyCustomTab(),
   onRocketDoubleTapped: (context) {
     showDialog(
@@ -87,6 +87,8 @@ class HomePageState extends State<HomePage> {
         LogarteDioInterceptor(logarte),
       );
 
+
+
     logarte.attach(
       context: context,
       visible: false,
@@ -111,8 +113,10 @@ class HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            LogarteMagicalTap(
-              logarte: logarte,
+            InkWell(
+              onTap: (){
+                logarte.openConsole(context);
+              },
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.blueGrey.shade50,

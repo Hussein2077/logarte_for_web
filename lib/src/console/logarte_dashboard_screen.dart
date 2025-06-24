@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:logarte/logarte.dart';
 import 'package:logarte/src/console/logarte_entry_item.dart';
@@ -111,38 +113,61 @@ class _LogarteDashboardScreenState extends State<LogarteDashboardScreen> {
             body: ValueListenableBuilder(
               valueListenable: widget.instance.logs,
               builder: (context, values, child) {
-                return AnimatedBuilder(
-                  animation: _controller,
-                  builder: (_, __) {
-                    final search = _controller.text.toLowerCase();
+                return Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        widget.instance.logs.value.clear();
+                        widget.instance.logs.notifyListeners();
+                      },
+                      child:   Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Container(
+                            color: Colors.red,
 
-                    return TabBarView(
-                      children: [
-                        _List<LogarteEntry>(
-                          instance: widget.instance,
-                          search: search,
-                        ),
-                        _List<PlainLogarteEntry>(
-                          instance: widget.instance,
-                          search: search,
-                        ),
-                        _List<NetworkLogarteEntry>(
-                          instance: widget.instance,
-                          search: search,
-                        ),
-                        _List<DatabaseLogarteEntry>(
-                          instance: widget.instance,
-                          search: search,
-                        ),
-                        _List<NavigatorLogarteEntry>(
-                          instance: widget.instance,
-                          search: search,
-                        ),
-                        if (widget.instance.customTab != null)
-                          widget.instance.customTab!,
-                      ],
-                    );
-                  },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Clear all'),
+                            )),
+                      ),
+
+                    ),
+                    AnimatedBuilder(
+                      animation: _controller,
+                      builder: (_, __) {
+                        final search = _controller.text.toLowerCase();
+
+                        return Expanded(
+                          child: TabBarView(
+                            children: [
+                              _List<LogarteEntry>(
+                                instance: widget.instance,
+                                search: search,
+                              ),
+                              _List<PlainLogarteEntry>(
+                                instance: widget.instance,
+                                search: search,
+                              ),
+                              _List<NetworkLogarteEntry>(
+                                instance: widget.instance,
+                                search: search,
+                              ),
+                              _List<DatabaseLogarteEntry>(
+                                instance: widget.instance,
+                                search: search,
+                              ),
+                              _List<NavigatorLogarteEntry>(
+                                instance: widget.instance,
+                                search: search,
+                              ),
+                              if (widget.instance.customTab != null)
+                                widget.instance.customTab!,
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 );
               },
             ),
@@ -171,6 +196,13 @@ class _List<T extends LogarteEntry> extends StatelessWidget {
         (content) => content.toLowerCase().contains(search),
       );
     }).toList();
+    //delay
+    Future.delayed(const Duration(milliseconds: 100)).then((value) {
+
+        filtered.clear();
+
+    });
+ ;
 
     return Scrollbar(
       child: ListView.separated(
@@ -178,9 +210,9 @@ class _List<T extends LogarteEntry> extends StatelessWidget {
         itemCount: filtered.length,
         padding: const EdgeInsets.only(bottom: 32.0, top: 8.0),
         itemBuilder: (context, index) {
-          final log = filtered.reversed.toList()[index];
+          final loge = filtered.reversed.toList()[index];
 
-          return LogarteEntryItem(log, instance: instance);
+          return LogarteEntryItem(loge, instance: instance);
         },
         separatorBuilder: (context, index) => const Divider(height: 0.0),
       ),

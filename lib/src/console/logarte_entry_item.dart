@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:logarte/logarte.dart';
 import 'package:logarte/src/console/network_log_entry_details_screen.dart';
@@ -19,6 +21,7 @@ class LogarteEntryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (entry is NetworkLogarteEntry) {
+
       return _NetworkItem(
         entry: entry as NetworkLogarteEntry,
         instance: instance,
@@ -151,6 +154,7 @@ class _NetworkItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return ListTile(
       onTap: () {
         Navigator.of(context).push(
